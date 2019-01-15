@@ -1,0 +1,46 @@
+{
+    "title": "this is deli",
+    "description": "",
+    "delicatesses": [
+        {
+            "id": "1",
+            "location": "",
+            "url": "",
+            "type": "restaurant",
+            "rating": "",
+            "food_type": "burger",
+            "criteria": {
+                "beilagen": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "sauces": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "meat": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "bread": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "cheese": null,
+                "environment": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "service": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "price": {
+                    "rating": 7,
+                    "description": ""
+                }
+            }
+
+        }
+    ]
+}
