@@ -1,0 +1,286 @@
+{
+    "meta": {
+        "title": "Délicatesses",
+        "description": "",
+        "theme": "pure"
+    },
+    "delicatesses": {
+        "ratings": [
+            {
+                "id": 111,
+                "place": 2,
+                "user": 3232,
+                "beilagen": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "sauces": {
+                    "rating": 7,
+                    "description": "Spicy"
+                },
+                "meat": {
+                    "rating": 2,
+                    "description": "Well cooked"
+                },
+                "bread": {
+                    "rating": 3,
+                    "description": ""
+                },
+                "cheese": {
+                    "rating": 4,
+                    "description": ""
+                },
+                "sushi": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "poulet": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "environment": {
+                    "rating": 5,
+                    "description": ""
+                },
+                "service": {
+                    "rating": 4,
+                    "description": ""
+                },
+                "price": {
+                    "rating": 6,
+                    "description": ""
+                },
+                "overall": {
+                    "rating": 6,
+                    "description": ""
+                }
+            },
+            {
+                "id": 112,
+                "place": 2,
+                "user": 3232,
+                "beilagen": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "sauces": {
+                    "rating": 7,
+                    "description": "Spicy"
+                },
+                "meat": {
+                    "rating": 7,
+                    "description": "Well cooked"
+                },
+                "bread": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "cheese": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "sushi": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "poulet": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "environment": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "service": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "price": {
+                    "rating": 2,
+                    "description": ""
+                },
+                "overall": {
+                    "rating": 4,
+                    "description": ""
+                }
+            },
+            {
+                "id": 1212,
+                "place": 2,
+                "user": 1515,
+                "beilagen": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "sauces": {
+                    "rating": 7,
+                    "description": "Spicy"
+                },
+                "meat": {
+                    "rating": 7,
+                    "description": "Well cooked"
+                },
+                "bread": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "cheese": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "sushi": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "poulet": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "environment": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "service": {
+                    "rating": 7,
+                    "description": ""
+                },
+                "price": {
+                    "rating": 2,
+                    "description": ""
+                },
+                "overall": {
+                    "rating": 3,
+                    "description": ""
+                }
+            }
+        ],
+        "places": [
+            {
+                "id": 1,
+                "name": "Enge Thai",
+                "address": "Zurich Enge",
+                "url": "http:enge.ch",
+                "place_type": "restaurant",
+                "rating": 8,
+                "food_types": ["asian"]
+            },
+            {
+                "id": 2,
+                "address": "",
+                "name": "Jelmoli",
+                "url": "",
+                "place_type": "restaurant",
+                "rating": 9,
+                "food_types": ["steackhouse", "burger"]
+            },
+            {
+                "id": 3,
+                "address": "Museum für Gestaltung Zürich",
+                "name": "Poulet Guggeli",
+                "url": "",
+                "place_type": "truck",
+                "rating": 7,
+                "food_types": ["sandwich"]
+            }
+        ],
+        "users": [
+            {
+                "id": 3232,
+                "name": "Jean-Baptiste"
+            },
+            {
+                "id": 1515,
+                "name": "François"
+            }
+        ],
+        "food_types": [
+            {
+                "id": "burger",
+                "name": "Burger"
+            },
+            {
+                "id": "steackhouse",
+                "name": "Steackhouse"
+            },
+            {
+                "id": "sandwich",
+                "name": "Sandwich"
+            },
+            {
+                "id": "asian",
+                "name": "Asian"
+            },
+            {
+                "id": "korean",
+                "name": "Korean"
+            }
+        ],
+        "place_types": [
+            {
+                "id": "restaurant",
+                "name": "Restaurant"
+            },
+            {
+                "id": "truck",
+                "name": "Truck"
+            }
+        ],
+        "rating_criteria": [
+            {
+                "name": "Overall",
+                "id": "overall",
+                "types": ["all"]
+            },
+            {
+                "name": "Price",
+                "id": "price",
+                "types": ["all"]
+            },
+            {
+                "name": "Service",
+                "id": "service",
+                "types": ["all"]
+            },
+            {
+                "name": "Environment",
+                "id": "environment",
+                "types": ["all"]
+            },
+            {
+                "name": "Sushi",
+                "id": "sushi",
+                "types": ["asian"]
+            },
+            {
+                "name": "Cheese",
+                "id": "cheese",
+                "types": ["burger"]
+            },
+            {
+                "name": "Poulet",
+                "id": "poulet",
+                "types": ["sandwich"]
+            },
+            {
+                "name": "Bread",
+                "id": "bread",
+                "types": ["burger", "sandwich"]
+            },
+            {
+                "name": "Meat",
+                "id": "meat",
+                "types": ["burger", "steackhouse"]
+            },
+            {
+                "name": "Sauces",
+                "id": "sauces",
+                "types": ["burger"]
+            },
+            {
+                "name": "Beilagen",
+                "id": "beilagen",
+                "types": ["burger", "steackhouse"]
+            }
+        ]
+    }
+}

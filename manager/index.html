@@ -1,0 +1,747 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Délicatesses</title>
+    <style>
+        body{
+            background-color: #f1f3eb80;
+            font: 400 1em Courier, monospace;
+            margin: 0 auto 50px;
+            max-width: 1200px;
+            line-height: 1.6;
+            font-size: 18px;
+            color:#444;
+            padding: 0 15px
+        }
+
+        a {
+            color: #8398b9;
+        }
+
+        h1,h2,h3{line-height:1.2}
+
+        [v-cloak] { display: none; }
+
+        .flex {
+            display: flex;
+            align-items: center;
+        }
+
+        .flex-between {
+            justify-content: space-between;
+        }
+
+        .relative {
+            position: relative;
+        }
+
+        button{
+            border: none;
+            background-color: #f36f21;
+            font-size: .75rem;
+            padding: .25em .5rem;
+            text-transform: uppercase;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input {
+            font-size: .75rem;
+            padding: 0.25em .5rem;
+            border: none;
+        }
+
+        .users{
+            position: absolute;
+            right: 0;
+            top: 75px;;
+            text-align: right;
+            padding: 15px;
+            background-color: #eff1e9;
+        }
+
+        .users ul {
+            text-align: left;
+            list-style: none;
+            padding: 0;
+	        margin: 0;
+        }
+
+        .users ul li {
+            margin: 0 0 15px;
+        }
+
+        .manage-user {
+            margin-top: 15px;
+        }
+
+        .manage-user h4 {
+            margin: 20px 0 0;
+        }
+
+        .manage-user form label{
+            display: block;
+        }
+
+        .sm-title{
+            margin: 0 10px 0 0;
+            font-size: 0.9em;
+        }
+
+        .list ul{
+            padding: 0;
+	        list-style: none;
+        }
+
+        .list > ul > li{
+            border-bottom: 2px solid #eff1e9;
+	        padding: 15px 0;
+        }
+
+        header {
+            border-bottom: 2px solid #eff1e9;
+	        margin-bottom: 20px;
+        }
+
+        main {
+            display: flex;
+        }
+
+        section {
+            flex: 0 0 50%;
+        }
+
+        .list {
+            margin-right: 15px;
+        }
+
+        .edit {
+            margin-left: 15px;
+        }
+
+        .rating {
+            background-color: #eff1e9;
+	        padding: 10px;
+            font-weight: bold;
+        }
+
+        .rating-description {
+            font-size: 0.9em;
+            margin: 15px 0;
+            font-style: italic;
+            line-height: 1.2;
+        }
+
+        .title-margin-sm{
+            margin: 10px 0 5px;
+        }
+
+        .place-actions, .actions {
+            margin-top: 15px;
+        }
+
+        .place-actions button{
+            background-color: #8398b9;
+        }
+
+        .place-details{
+            margin: 15px 0 0;
+            display: table;
+        }
+
+        .details {
+            margin: 15px 0 0;
+        }
+
+        .details li {
+            display: table-row;
+        }
+
+        .details li > span{
+            display: table-cell;
+            padding-right: 15px;
+        }
+
+        .details li > span:last-child {
+            font-weight: bold;
+            padding-right: 0;
+        }
+
+        .ratings-list > li {
+            margin: 20px 0;
+        }
+
+        .ratings-details li > span {
+            padding: 10px 10px 10px 0;
+        }
+
+        .edit .ratings-form{
+            margin-top: 20px;
+        }
+
+        .edit-rating-top {
+            display: block;
+            margin: 15px 0;
+        }
+
+        .edit form.ratings-form > label{
+            display: flex;
+        }
+
+        .edit form.ratings-form label span {
+            flex: 0 0 30%;
+        }
+
+        .edit form.ratings-form label input[type="text"], .edit form label input[type="number"] {
+            width: 38px;
+            height: 20px;
+            text-align: center;
+	        font-size: 1.1em;
+        }
+
+        .edit form label textarea{
+            flex: 0 0 200px;
+            border: none;
+            min-height: 35px;
+            margin: 0 0 15px 15px;
+            padding: 10px;
+        }
+
+        .edit_food_type{
+            display: flex;
+            font-family: arial;
+            align-items: center;
+            font-size: 0.7em;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <header class="relative">
+
+            <div class="flex flex-between">
+                <h1 v-if="model.meta">{{model.meta.title}}</h1>
+                <div class="flex">
+                    <h2 class="sm-title"><span v-if="activeUser">Active as {{activeUser.name}}</span></h2>
+                    <button v-on:click="manageUsers = !manageUsers">
+                        <span v-if="!manageUsers">Manage users</span>
+                        <span v-if="manageUsers">Hide</span>
+                    </button>
+                </div>
+            </div>
+
+            <div v-if="manageUsers" class="users">
+                <ul v-if="model">
+                    <li v-for="user in model.delicatesses.users" :key="user.id">
+                        <div>{{user.name}}</div>
+                        <div>
+                            <button v-on:click="editUser(user)">edit</button>
+                            <button v-on:click="deleteUser(user)">delete</button>
+                            <button v-on:click="selectUser(user)">Select as active</button>
+                        </div>
+                    </li>
+                </ul>
+                <button v-on:click="addUser()">Add User</button>
+
+                <div class="manage-user" v-if="editedUser">
+                    <h4 v-if="editedUser.mode == 'add'">Add user</h4>
+                    <form v-on:submit.prevent="saveUser(editedUser.mode)">
+                        <label>
+                            <span>Name</span>
+                            <input type="text" v-model="editedUser.name">
+                        </label>
+
+                        <div>
+                            <button type="submit">
+                                <span v-if="editedUser.mode == 'add'">Save new user</span>
+                                <span v-if="editedUser.mode == 'edit'">Save edited user</span>
+                            </button>
+                            <button type="button" v-on:click="cancelAction('editedUser')">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </header>
+
+        <div class="actions flex flex-between">
+            <div>
+                <button v-if="!editedPlace || editedPlace.mode === 'edit'" v-on:click="addPlace()">Add Place</button>
+                <button v-if="editedPlace && editedPlace.mode !== 'edit'" v-on:click="cancelAction('editedPlace')">Cancel Add</button>
+                <button v-if="!editedRating || editedRating.mode === 'edit' || editedRating.place !== null" v-on:click="addRating()">Add Rating</button>
+                <button v-if="editedRating && editedRating.mode !== 'edit' && editedRating.place === null" v-on:click="cancelAction('editedRating')">Cancel Add</button>
+            </div>
+
+            <button v-on:click="compileDelicatesses()">Compile</button>
+        </div>
+
+        <main>
+            <section class="list">
+
+                <h2>Places</h2>
+                <ul v-if="model">
+                    <li v-if="model" v-for="place in sortedPlaces" :key="place.id">
+
+                        <h3 class="title-margin-sm">
+                            <span v-if="place.rating" class="rating">{{place.rating | round}}</span>
+                            <span>{{place.name}}</span>
+                        </h3>
+
+                        <div class="place-actions">
+                            <button v-on:click="toDisplay('places', place.id)">
+                                <span v-if="!display.places[place.id]">View details</span>
+                                <span v-if="display.places[place.id]">Hide details</span>
+                            </button>
+                            <button v-if="!editedPlace || editedPlace.mode === 'add' || editedPlace.id !== place.id" v-on:click="editPlace(place)">Edit</button>
+                            <button v-if="editedPlace && editedPlace.mode !== 'add' && editedPlace.id === place.id" v-on:click="cancelAction('editedPlace')">Cancel Edit</button>
+                            <button v-on:click="deletePlace(place)">Delete</button>
+                            <button v-if="!editedRating || editedRating.mode === 'edit' || editedRating.place === null || editedRating.place !== place.id" v-on:click="addRating(place)">Add Rating</button>
+                            <button v-if="editedRating && editedRating.mode !== 'edit' && editedRating.place !== null && editedRating.place === place.id" v-on:click="cancelAction('editedRating')">Cancel Add</button>
+                        </div>
+
+                        <div v-if="display.places[place.id]">
+
+                            <ul class="details">
+                                <li v-if="place.address">
+                                    <span>Address</span>
+                                    <span>{{place.address}}</span>
+                                </li>
+                                <li v-if="place.url">
+                                    <span>Website</span>
+                                    <span>{{place.url}}</span>
+                                </li>
+                                <li v-if="getPlaceFromPlaceType(place.place_type)">
+                                    <span>Type</span>
+                                    <span>{{getPlaceFromPlaceType(place.place_type).name}}</span>
+                                </li>
+                                <li>
+                                    <span>Food</span>
+                                    <span class="food_types"><span v-for="(food_type, index) in place.food_types" :key="food_type" >{{getFoodTypeName(food_type).name}}<span v-if="index+1 < place.food_types.length">, </span></span></span>
+                                </li>
+                            </ul>
+
+                            <h4 class="title-margin-sm" v-if="filteredRatings(place).length != 0">Ratings</h4>
+                            <ul class="ratings-list">
+
+                                <li v-for="rating in filteredRatings(place)" :key="rating.id">
+                                    <span class="rating" v-bind:class="['rating-' + rating.overall.rating]">{{rating.overall.rating}}</span>
+                                    From {{getUser(rating.user).name}}
+                                    <button v-on:click="toDisplay('ratings', rating.id)">
+                                        <span v-if="!display.ratings[rating.id]">View details</span>
+                                        <span v-if="display.ratings[rating.id]">Hide details</span>
+                                    </button>
+                                    <button v-if="activeUser !== null && rating.user === activeUser.id && (!editedRating || editedRating.mode === 'add' || editedRating.id !== rating.id)" v-on:click="editRating(rating, place)">Edit</button>
+                                    <button v-if="activeUser !== null && rating.user === activeUser.id && editedRating && editedRating.mode !== 'add' && editedRating.id === rating.id" v-on:click="cancelAction('editedRating')">Cancel Edit</button>
+                                    <button v-if="activeUser !== null && rating.user === activeUser.id" v-on:click="deleteRating(rating)">Delete</button>
+
+                                    <div v-if="display.ratings[rating.id]">
+                                        <div class="rating-description">{{rating.overall.description}}</div>
+                                        <ul class="details ratings-details">
+                                            <li v-for="criterion in model.delicatesses.rating_criteria" :key="criterion.id" v-if="checkCriterionInPlace(rating, criterion.id, true)">
+                                                <span>{{criterion.name}}</span>
+                                                <span><span class="rating">{{rating[criterion.id].rating}}</span></span>
+                                                <span class="desc">{{rating[criterion.id].description}}</span>
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </li>
+                </ul>
+
+            </section>
+
+            <section class="edit">
+                <div v-if="editedRating">
+
+                    <label class="edit-rating-top" v-if="activeUser === null">
+                        <div>Select an active user</div>
+                        <select v-model="activeUser" v-on:change="activateUser()">
+                            <option v-for="user in model.delicatesses.users" v-bind:value="user">
+                                {{user.name}}
+                            </option>
+                        </select>
+                        or <a href="javascript:void(0)" v-on:click="addUser(true)">add one</a>
+                    </label>
+
+                    <label class="edit-rating-top" v-if="activeUser === null && editedUser &&  editedUser.location">
+                        <form v-on:submit.prevent="saveUser(editedUser.mode)">
+                            <label>
+                                <span>Name</span>
+                                <input type="text" v-model="editedUser.name">
+                            </label>
+
+                            <div>
+                                <button type="submit">Save new user</button>
+                                <button type="button" v-on:click="cancelAction('editedUser')">Cancel</button>
+                            </div>
+                        </form>
+
+                    </label>
+
+                    <label class="edit-rating-top" v-if="activeUser">
+                        <span>Active as <strong>{{activeUser.name}}</strong></span>
+                    </label>
+
+                    <label class="edit-rating-top" v-if="activeUser !== null && editedRating.place === null">
+                        <label>
+                            <div>Choose a place</div>
+                            <select v-model="editedRating.place">
+                                <option v-for="place in model.delicatesses.places" v-bind:value="place.id">
+                                    {{place.name}}
+                                </option>
+                            </select>
+                            or <a href="javascript:void(0)" v-on:click="addPlace(true)">add one</a>
+                        </label>
+                    </label>
+
+                    <label class="edit-rating-top" v-if="editedRating.place !== null">
+                        <span>Place: <strong>{{getPlaceFromPlaceId(editedRating.place).name}}</strong></span>
+                    </label>
+
+                    <div v-if="activeUser !== null && editedRating.place">
+
+                        <form class="ratings-form" v-on:submit.prevent="saveRating(editedRating.mode)">
+
+                            <label v-for="criterion in model.delicatesses.rating_criteria" :key="criterion.id" v-if="checkCriterionInPlace(editedRating, criterion.id)">
+                                <span>{{criterion.name}}</span>
+                                <input type="number" maxlength="2" v-model.number="editedRating[criterion.id].rating">
+                                <textarea v-model="editedRating[criterion.id].description"></textarea>
+                            </label>
+
+                            <button type="submit">
+                                <span v-if="editedRating.mode == 'add'">Save new rating</span>
+                                <span v-if="editedRating.mode == 'edit'">Save edited rating</span>
+                            </button>
+                            <button type="button" v-on:click="cancelAction('editedRating')">Cancel</button>
+                        </form>
+                    </div>
+
+                    <button v-if="activeUser === null || !editedRating.place" v-on:click="cancelAction('editedRating')">Cancel</button>
+
+
+                </div>
+
+                <div v-if="editedPlace">
+                    <h3>
+                        <span v-if="editedPlace.mode == 'add'">Add new place</span>
+                        <span v-if="editedPlace.mode == 'edit'">Edit {{editedPlace.name}} place</span>
+                    </h3>
+                    <form v-on:submit.prevent="savePlace(editedPlace.mode)">
+                        <label>
+                            <span>Name</span>
+                            <input type="text" v-model="editedPlace.name">
+                        </label>
+                        <label>
+                            <span>Address</span>
+                            <input type="text" v-model="editedPlace.address">
+                        </label>
+                        <label>
+                            <span>Url</span>
+                            <input type="text" v-model="editedPlace.url">
+                        </label>
+                        <label>
+                            <span>Food type</span>
+                            <label class="edit_food_type" v-for="food_type in model.delicatesses.food_types" v-bind:value="food_type.id">
+                                <input type="checkbox" :value="food_type.id" v-model="editedPlace.food_types">
+                                {{food_type.name}}
+                            </label>
+
+                        </label>
+                        <label>
+                            <span>Place type</span>
+                            <select v-model="editedPlace.place_type">
+                                <option v-for="place_type in model.delicatesses.place_types" v-bind:value="place_type.id">
+                                    {{place_type.name}}
+                                </option>
+                            </select>
+                        </label>
+
+                        <div class="actions">
+                            <button type="submit">
+                                <span v-if="editedPlace.mode == 'add'">Save new place</span>
+                                <span v-if="editedPlace.mode == 'edit'">Save edited place</span>
+                            </button>
+                            <button type="button" v-on:click="cancelAction('editedPlace')">Cancel</button>
+                        </div>
+
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+        var app = new Vue({
+            el: '#app',
+            data: {
+                model: '',
+                editedPlace: null,
+                editedRating: null,
+                editedUser: null,
+                activeUser: null,
+                manageUsers: false,
+                display: {
+                    places : [],
+                    ratings: []
+                }
+            },
+            methods: {
+
+                editPlace(place) {
+                    this.editedPlace = place
+                    this.editedPlace.mode = 'edit'
+                },
+
+                addPlace(goToRating) {
+                    this.editedPlace = {
+                        "id": null,
+                        "address": "",
+                        "name": "",
+                        "url": "",
+                        "place_type": "",
+                        "rating": null,
+                        "food_types": [],
+                        "mode": "add"
+                    }
+
+                    if(goToRating) {
+                        this.editedPlace.go_rate = true
+                    }
+                },
+
+                toDisplay(type, section) {
+                    let isDiplayed = (this.display[type][section]) ? false : true;
+                    this.$set(this.display[type], section, isDiplayed);
+                },
+
+                checkCriterionInPlace(editedRating, criterion, isList) {
+
+                    console.log('editedRating', editedRating);
+                    // console.log('criterion', criterion);
+
+                    if(isList && criterion === 'overall') {
+                        return false;
+                    }
+
+                    let ratedPlaceFoodTypes = this.getPlaceFromRating(editedRating.place).food_types
+                    // console.log('ratedPlaceFoodTypes', ratedPlaceFoodTypes);
+
+                    let criterionTypes = this.model.delicatesses.rating_criteria.find((c => c.id === criterion)).types
+                    // console.log('criterionTypes', criterionTypes);
+
+                    if(criterionTypes.indexOf('all') >= 0) {
+                        return true;
+                    }
+
+                    return ratedPlaceFoodTypes.some(r=> criterionTypes.indexOf(r) >= 0)
+                },
+
+                savePlace(mode) {
+
+                    if(mode === 'add'){
+                        this.editedPlace.id = this.uuidv4()
+                        this.model.delicatesses.places.push(this.editedPlace)
+                    }
+
+                    if(this.editedPlace.go_rate) {
+                        this.addRating(this.editedPlace)
+                    }
+
+                    this.editedPlace = null
+                },
+
+                deletePlace (place) {
+                    let index = this.model.delicatesses.places.indexOf(place);
+
+                    if (index > -1) {
+                        this.model.delicatesses.places.splice(index, 1);
+                    }
+                },
+
+                editRating(rating, place) {
+                    this.editedRating = rating
+                    this.editedRating.mode = 'edit'
+                },
+
+                addRating(place) {
+
+                    let placeId = (place) ? place.id : null;
+                    let activeUserId = (this.activeUser) ? this.activeUser.id : null;
+
+                    this.editedRating = {
+                        "id": null,
+                        "place": placeId,
+                        "user": activeUserId,
+                        "mode": "add"
+                    }
+
+                    this.model.delicatesses.rating_criteria.forEach(criterion => {
+                        this.editedRating[criterion.id] = {
+                            "rating": null,
+                            "description": ""
+                        }
+                    });
+                },
+
+                deleteRating(rating) {
+
+                    let ratingPlace = this.getPlaceFromRating(rating.place)
+
+                    let index = this.model.delicatesses.ratings.indexOf(rating);
+
+                    if (index > -1) {
+                        this.model.delicatesses.ratings.splice(index, 1);
+                    }
+
+                    this.calculatePlaceRating(ratingPlace);
+                },
+
+                saveRating(mode) {
+                    let ratingPlace = this.getPlaceFromRating(this.editedRating.place)
+                    if(mode === 'add'){
+                        this.editedRating.id = this.uuidv4()
+                        this.model.delicatesses.ratings.push(this.editedRating)
+                    }
+
+                    this.calculateRating(this.editedRating);
+
+                    this.editedRating = null
+
+                    this.calculatePlaceRating(ratingPlace);
+
+                    this.toDisplay('places', ratingPlace.id)
+                },
+
+                filteredRatings(place) {
+                    return this.model.delicatesses.ratings.filter((rating) => {
+                        return rating.place === place.id
+                    })
+                },
+
+                editUser(user) {
+                    this.editedUser = user
+                    this.editedUser.mode = 'edit'
+                },
+
+                addUser(isOutside) {
+                    this.editedUser = {
+                        'id': null,
+                        'name': '',
+                        'mode': 'add'
+                    }
+
+                    if(isOutside) {
+                        this.editedUser.location = true
+                    }
+                },
+
+                saveUser(mode) {
+                    if(mode === 'add'){
+                        this.editedUser.id = this.uuidv4()
+                        this.model.delicatesses.users.push(this.editedUser)
+                    }
+                    this.activeUser = this.editedUser
+                    this.editedUser = null
+                },
+
+                deleteUser(user) {
+                    let index = this.model.delicatesses.users.indexOf(user);
+
+                    if (index > -1) {
+                        this.model.delicatesses.users.splice(index, 1);
+                    }
+
+                    if(this.activeUser === user) {
+                        this.activeUser = null
+                    }
+                },
+
+                selectUser(user) {
+                    this.activeUser = user
+                    localStorage.setItem("delicatessenActiveUser", JSON.stringify(this.activeUser));
+                },
+
+                activateUser() {
+                    this.editedRating.user = this.activeUser.id;
+                    localStorage.setItem("delicatessenActiveUser", JSON.stringify(this.activeUser));
+                },
+
+                getUser(userId) {
+                    return this.model.delicatesses.users.find(u => u.id === userId)
+                },
+
+                getPlaceFromRating(ratingPlaceId) {
+                    return this.model.delicatesses.places.find(p => p.id === ratingPlaceId)
+                },
+
+                getFoodTypeName(food_type) {
+                    return this.model.delicatesses.food_types.find(f => f.id === food_type)
+                },
+
+                getPlaceFromPlaceType(placeType) {
+                    return this.model.delicatesses.place_types.find(f => f.id === placeType)
+                },
+
+                getPlaceFromPlaceId(placeId) {
+                    return this.model.delicatesses.places.find(p => p.id === placeId)
+                },
+
+                cancelAction(action) {
+                    this[action] = null
+                },
+
+                uuidv4() {
+                    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                        return v.toString(16);
+                    });
+                },
+
+                calculatePlaceRating(place) {
+                    let avgs = this.model.delicatesses.ratings.filter(rating => rating.place === place.id)
+                    place.rating = avgs.reduce((a, b) => a + b.overall.rating, 0) / avgs.length
+                },
+
+                calculateRating(rating) {
+                    let ratings = rating
+                },
+
+                compileDelicatesses() {
+                    axios.post('/compile', this.model).then(response => {})
+                }
+
+            },
+            mounted: function() {
+
+                axios.get('delicatesses.json').then(response => {
+                    this.model = response.data
+                })
+
+                if (localStorage.getItem("delicatessenActiveUser"))
+                    this.activeUser = JSON.parse(localStorage.getItem("delicatessenActiveUser"));
+            },
+            computed: {
+
+                sortedPlaces(){
+                    return this.model.delicatesses.places.sort((a, b) => b.rating - a.rating );
+                }
+            },
+            filters: {
+                round: function (value) {
+                    return Math.round(value * 2)/2;
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>

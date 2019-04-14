@@ -1,0 +1,23 @@
+{
+  "description": "",
+  "engines": {
+    "node": ">= 0.6.0",
+    "npm": ">= 1.0.0"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "main": "./app/generator.js",
+  "name": "generator",
+  "scripts": {
+    "start": "node ./server/index.js",
+    "generate": "ts-node-dev --respawn --transpileOnly ./generator/index.ts"
+  },
+  "version": "1.0.0",
+  "devDependencies": {
+    "express": "^4.16.2"
+  },
+  "dependencies": {
+    "ts-node-dev": "^1.0.0-pre.32",
+    "typescript": "^3.4.2"
+  }
+}
