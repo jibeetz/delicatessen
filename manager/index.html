@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width">
     <title>Délicatesses</title>
     <style>
-        body{
+        body {
             background-color: #f1f3eb80;
             font: 400 1em Courier, monospace;
             margin: 0 auto 50px;
@@ -20,7 +20,7 @@
             color: #8398b9;
         }
 
-        h1,h2,h3{line-height:1.2}
+        h1, h2, h3 {line-height:1.2}
 
         [v-cloak] { display: none; }
 
@@ -31,10 +31,6 @@
 
         .flex-between {
             justify-content: space-between;
-        }
-
-        .relative {
-            position: relative;
         }
 
         button{
@@ -103,6 +99,7 @@
         header {
             border-bottom: 2px solid #eff1e9;
 	        margin-bottom: 20px;
+            position: relative;
         }
 
         main {
@@ -175,6 +172,17 @@
 
         .ratings-details li > span {
             padding: 10px 10px 10px 0;
+        }
+
+        .edit-places form > label {
+            display: flex;
+            align-items: baseline;
+            margin: 15px 0;
+        }
+
+        .edit-places form > label > span {
+            margin-right: 15px;
+            flex: 0 0 20%;
         }
 
         .edit .ratings-form{
@@ -424,10 +432,9 @@
 
                     <button v-if="activeUser === null || !editedRating.place" v-on:click="cancelAction('editedRating')">Cancel</button>
 
-
                 </div>
 
-                <div v-if="editedPlace">
+                <div v-if="editedPlace" class="edit-places">
                     <h3>
                         <span v-if="editedPlace.mode == 'add'">Add new place</span>
                         <span v-if="editedPlace.mode == 'edit'">Edit {{editedPlace.name}} place</span>
@@ -447,10 +454,13 @@
                         </label>
                         <label>
                             <span>Food type</span>
-                            <label class="edit_food_type" v-for="food_type in model.delicatesses.food_types" v-bind:value="food_type.id">
-                                <input type="checkbox" :value="food_type.id" v-model="editedPlace.food_types">
-                                {{food_type.name}}
-                            </label>
+                            <div>
+                                <label class="edit_food_type" v-for="food_type in model.delicatesses.food_types" v-bind:value="food_type.id">
+                                    <input type="checkbox" :value="food_type.id" v-model="editedPlace.food_types">
+                                    {{food_type.name}}
+                                </label>
+                            </div>
+
 
                         </label>
                         <label>
@@ -732,12 +742,12 @@
             computed: {
 
                 sortedPlaces(){
-                    return this.model.delicatesses.places.sort((a, b) => b.rating - a.rating );
+                    return this.model.delicatesses.places.sort((a, b) => b.rating - a.rating);
                 }
             },
             filters: {
                 round: function (value) {
-                    return Math.round(value * 2)/2;
+                    return Math.round(value * 2) / 2;
                 }
             }
         })
