@@ -11,11 +11,13 @@ const writeFile = util.promisify(fs.writeFile);
 async function generateTemplate () {
 
     let styleFromFile:string = await readFile('./themes/' + Data.meta.theme + '/style.css', 'utf8');
-    styleFromFile = styleFromFile.replace(/ /g,'').replace(/\r?\n|\r/g, '');
+    styleFromFile = styleFromFile.replace(/\r?\n|\r/g, '');
 
     let template:string = ''
 
     template += TemplateSections.head(Data.meta.title, styleFromFile)
+    template += TemplateSections.header(Data.meta.title)
+    template += TemplateSections.main(Data)
     template += TemplateSections.footer()
     template += TemplateSections.end()
 
@@ -23,7 +25,7 @@ async function generateTemplate () {
 
     const applyTemplate = async () => {
         await writeFile("./public/index.html", template);
-        console.log('file write done with promisified writeFile')
+        console.log('file write done')
     }
     applyTemplate()
 }

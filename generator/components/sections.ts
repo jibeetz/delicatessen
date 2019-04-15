@@ -12,6 +12,22 @@ export class Sections {
         </head><body>`
     }
 
+    header(title: string):string{
+        return `<header><h1>` + title + `</h1></header>`
+    }
+
+    main(data):string {
+        let mainTemplate: string = '<ul>'
+
+        data.delicatesses.places.forEach(place => {
+            mainTemplate += `<li><h3>` + place.name +`</h3></li>`
+        });
+
+        mainTemplate += '</ul>'
+
+        return mainTemplate
+    }
+
     footer():string {
         return `<footer></footer>`
     }
